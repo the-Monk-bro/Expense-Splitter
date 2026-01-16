@@ -1,0 +1,111 @@
+import styles from './Group.module.css'
+import { useState } from 'react';
+import PropTypes, { symbol } from 'prop-types';
+
+
+function Group(props){
+    //Variables and functions for editing Occasion name
+    const [occasionName,setOccasionName] = useState ("New Occasion");
+    const [editInput, setEditInput] = useState(false);
+
+    const handleEdit =()=>{
+        setEditInput(true);
+    }
+    const enterOnEdit =(e) => {
+        if (e.key==="Enter"){
+            setOccasionName(occasionName);
+            setEditInput(false);
+        }
+    }
+
+    //Varaibles and functions for adding new member in a group
+    const [addInput, setAddInput]= useState(false);
+    const [members,setMembers] = useState([]);
+    const [addButtonMsg, setAddButtonMsg]= useState("Add Member");
+    const [name,setName] = useState("");
+   
+    const handleAddButtonClick= ()=>{
+        setAddInput(!addInput);
+        addInput? setAddButtonMsg("Add Member") : setAddButtonMsg("Cancel");
+    }
+    const enterOnAdd=(e)=>{
+        if (e.key==="Enter" ){
+            setMembers([...members,{name:name, contribution:0}]);
+            setAddInput(false);
+            setAddButtonMsg("Add Member");
+        }
+    }
+
+    //Split calculations
+   
+
+
+   
+    
+    //Returning the U
+    return (
+        <div className={styles.groupBox}>
+
+            <header className={styles.header}>
+                {!editInput && <h2 className={styles.occasion}>{occasionName}</h2> }
+                {!editInput && <button onClick={handleEdit} className={styles.editButton}>Edit</button>}
+                {editInput && <input placeholder='Enter new name' className={styles.editOccasion} onChange={(e)=> setOccasionName(e.target.value)} onKeyDown={(e)=> enterOnEdit(e)}/> }
+            </header>
+
+            <ul className={styles.memList}>
+                {members.map((member,index) => <Member memIndex={index} memName={member.name} onChange={setMembers} />)} 
+            </ul>
+
+
+            
+
+            <footer className={styles.footer}>
+                <button className={styles.addButton} onClick={handleAddButtonClick}>{addButtonMsg}</button>
+                {addInput && <input className={styles.nameInput} placeholder='Enter name' onChange={(e)=> setName(e.target.value)} onKeyDown={(e)=> enterOnAdd(e)}/>}
+                <div className={styles.space}></div>
+
+                <button className={styles.splitButton}>Split</button>
+            </footer>
+        
+        </div>
+       
+    );
+
+}
+
+
+function Member(props){
+    //Variables and functions for changing amount contributed by the member
+    const [amount, setAmount] = useState("");
+    const [contribution, setContribution] = useState(0);
+
+    const handleAppend =()=>{
+        if (amount!=="") setContribution(c => c+amount);
+        props.onChange(prev=> prev.map(item=> item.name===props.memName? {...item, contribution: contribution}: item));
+        setAmount("");
+    }
+    const handleChangeAmount=(e)=>{
+        setAmount(Number(e.target.value)); 
+    }
+    const handleKick =()=> {
+        props.onChange(prev => prev.filter(item => item.name !== props.memName));
+    }
+
+    //Returning the UI
+    return (
+        <li className={styles.mem}>
+            <div className={styles.memName}> {props.memName}</div>
+            <div className={styles.contri}>{contribution}</div>
+            <input className={styles.amountInput} type='number' value={amount} step={10} min={0} onChange={(e)=> handleChangeAmount(e)} />
+            <button className={styles.appendButton} onClick={handleAppend}>Append</button>
+            <button className={styles.kickButton} onClick={handleKick}>Kick</button>
+        </li>
+
+    );
+}
+Member.propTypes={
+    name: PropTypes.string,
+}
+
+
+export default Group;

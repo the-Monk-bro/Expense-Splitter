@@ -1,0 +1,31 @@
+
+.header{
+    background-color: rgb(72, 80, 234);
+    padding: 10px;
+    box-shadow: 0px 4px rgba(13, 37, 97, 0.34);
+
+
+}
+
+.heading{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 40px;
+    margin:0;
+    margin-bottom: 10px;
+    justify-self: center;
+    color: rgb(193, 225, 238);
+    text-shadow:5px 5px black;
+}
+.newGroupbutton{
+    width: 130px;
+    height: 35px;
+    margin: 0 0 5px 10px;
+    background-color: rgb(10, 31, 126);
+    color: whitesmoke;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 2px 2px rgba(68, 45, 172, 0.207);
+
+
+
+}
