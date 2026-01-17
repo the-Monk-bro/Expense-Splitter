@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import PropTypes, { symbol } from 'prop-types';
 
 
-function Group(props){
+function Group({grp, onUpdate}){
     //Variables and functions for editing Occasion name
     const [occasionName,setOccasionName] = useState ("New Occasion");
     const [editInput, setEditInput] = useState(false);
@@ -14,10 +14,16 @@ function Group(props){
     }
     const enterOnEdit =(e) => {
         if (e.key==="Enter"){
-            setOccasionName(occasionName);
+            onUpdate(prev => prev.map(item => item.gid===grp.gid? {...item, name:occasionName}: item))
+            setOccasionName("");
             setEditInput(false);
         }
     }
+
+    const handleRemove =()=>{
+        onUpdate(prev=> prev.filter(item => item.gid!==grp.gid))
+    }
+
 
     //Varaibles and functions for adding new member in a group
     const [members,setMembers] = useState([]);
@@ -38,6 +44,8 @@ function Group(props){
             setName("");
         }
     }
+
+  
 
     //Split calculations
     const [total,setTotal] = useState(0);
@@ -61,8 +69,9 @@ function Group(props){
         <div className={styles.groupBox}>
 
             <header className={styles.header}>
-                {!editInput && <h2 className={styles.occasion}>{occasionName}</h2> }
-                {!editInput && <button onClick={handleEdit} className={styles.editButton}>Edit</button>}
+                {!editInput && <h2 className={styles.occasion}>{grp.name}</h2> }
+                {!editInput && <button onClick={handleEdit} className={styles.editButton}>Edit group name</button>}
+                {!editInput && <button onClick={handleRemove} className={styles.editButton}>Remove group</button>}
                 {editInput && <input placeholder='Enter new name' className={styles.editOccasion} onChange={(e)=> setOccasionName(e.target.value)} onKeyDown={(e)=> enterOnEdit(e)}/> }
             </header>
 
