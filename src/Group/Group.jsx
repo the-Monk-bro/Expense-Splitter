@@ -29,10 +29,11 @@ function Group(props){
         addInput? setAddButtonMsg("Add Member") : setAddButtonMsg("Cancel");
     }
     const enterOnAdd=(e)=>{
-        if (e.key==="Enter" ){
-            setMembers([...members,{name:name, contribution:0}]);
+        if (e.key==="Enter" && name.trim()!==""){
+            setMembers([...members,{id: Date.now(), name:name, contribution:0}]);
             setAddInput(false);
             setAddButtonMsg("Add Member");
+            setName("");
         }
     }
 
@@ -53,7 +54,10 @@ function Group(props){
             </header>
 
             <ul className={styles.memList}>
-                {members.map((member,index) => <Member memIndex={index} memName={member.name} onChange={setMembers} />)} 
+                {members.map(m => <Member  
+                                    mem = {m}
+                                    key={m.id}
+                                    onUpdate={setMembers} />)} 
             </ul>
 
 
@@ -74,28 +78,29 @@ function Group(props){
 }
 
 
-function Member(props){
+function Member({mem,onUpdate}){
     //Variables and functions for changing amount contributed by the member
     const [amount, setAmount] = useState("");
-    const [contribution, setContribution] = useState(0);
 
     const handleAppend =()=>{
-        if (amount!=="") setContribution(c => c+amount);
-        props.onChange(prev=> prev.map(item=> item.name===props.memName? {...item, contribution: contribution}: item));
-        setAmount("");
+        if (amount!==""){
+            onUpdate(prev=> prev.map(item=> item.id===mem.id? {...item, contribution: item.contribution+amount}: item));
+            setAmount("");
+        }
+       
     }
     const handleChangeAmount=(e)=>{
         setAmount(Number(e.target.value)); 
     }
     const handleKick =()=> {
-        props.onChange(prev => prev.filter(item => item.name !== props.memName));
+        onUpdate(prev => prev.filter(item => item.id !== mem.id));
     }
 
     //Returning the UI
     return (
         <li className={styles.mem}>
-            <div className={styles.memName}> {props.memName}</div>
-            <div className={styles.contri}>{contribution}</div>
+            <div className={styles.memName}> {mem.name}</div>
+            <div className={styles.contri}>{mem.contribution}</div>
             <input className={styles.amountInput} type='number' value={amount} step={10} min={0} onChange={(e)=> handleChangeAmount(e)} />
             <button className={styles.appendButton} onClick={handleAppend}>Append</button>
             <button className={styles.kickButton} onClick={handleKick}>Kick</button>
