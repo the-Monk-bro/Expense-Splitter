@@ -1,5 +1,6 @@
 import styles from './Group.module.css'
 import { useState } from 'react';
+import { useMemo } from 'react';
 import PropTypes, { symbol } from 'prop-types';
 
 
@@ -19,8 +20,9 @@ function Group(props){
     }
 
     //Varaibles and functions for adding new member in a group
-    const [addInput, setAddInput]= useState(false);
     const [members,setMembers] = useState([]);
+
+    const [addInput, setAddInput]= useState(false);
     const [addButtonMsg, setAddButtonMsg]= useState("Add Member");
     const [name,setName] = useState("");
    
@@ -30,7 +32,7 @@ function Group(props){
     }
     const enterOnAdd=(e)=>{
         if (e.key==="Enter" && name.trim()!==""){
-            setMembers([...members,{id: Date.now(), name:name, contribution:0}]);
+            setMembers([...members,{id: Date.now(), name:name, contribution:0 , net:0}]);
             setAddInput(false);
             setAddButtonMsg("Add Member");
             setName("");
@@ -38,6 +40,17 @@ function Group(props){
     }
 
     //Split calculations
+    const [total,setTotal] = useState(0);
+    const share = useMemo (()=> {
+        return total/members.length;
+    } , [total,members.length]);
+
+    const split =()=>{
+        setTotal(0);
+        members.forEach(m => setTotal(t=> t+m.contribution));
+        setMembers(prev=> prev.map(item => ({...item, net:share })));
+    }
+
    
 
 
@@ -68,8 +81,15 @@ function Group(props){
                 {addInput && <input className={styles.nameInput} placeholder='Enter name' onChange={(e)=> setName(e.target.value)} onKeyDown={(e)=> enterOnAdd(e)}/>}
                 <div className={styles.space}></div>
 
-                <button className={styles.splitButton}>Split</button>
+                <button onClick={split} className={styles.splitButton}>Split</button>
             </footer>
+
+            <div>
+                <p>Total: {total}</p>
+                <ul>
+                   {members.map(m=> <li>{m.name} : {m.contribution- m.net}</li>)}
+                </ul>
+            </div>
         
         </div>
        
