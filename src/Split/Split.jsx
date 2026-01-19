@@ -26,41 +26,44 @@ function Split ({members}){
         }, {})
     }, [members]);
 
-    //const final = useMemo(()=>{  })
+
+    const final = useMemo(()=>{
+        let info = [];
+        let Scnt=0;
+        let Dcnt=0;
+        while (Scnt< Object.keys(surplus).length){
+
+            let s = Object.entries(surplus)[Scnt];
+            while (s[1] >0){
+                let d = Object.entries(deficit)[Dcnt];
+                if (s[1]> d[1]){
+                    info.push(`${d[0]} needs to pay ${s[0]} : ${d[1].toFixed(2)}`)
+                    s[1]-= d[1];
+                    d[1]=0; Dcnt++;
+                    
+                }
+                else if (d[1]>=s[1]){
+                    info.push(`${d[0]} needs to pay ${s[0]} : ${s[1].toFixed(2)}`)
+                    d[1]-= s[1];
+                    s[1]=0; Scnt++;
+                }
+            }
+        }
+        return info;
+    },[surplus,deficit])
 
 
 
-
-
-
-
-
-  
-
-
-
-
-  
     
+
+
+
+
     return (
        
         <div>
-            <p>Total: {total}</p>
-            <ul>
-               { Object.entries(surplus).map(([key, value]) => (
-                <li key={key}>
-                    {key}: {value}
-                </li>
-                )) }
-               
-            </ul>
-            <ul>
-                {Object.entries(deficit).map(([key, value]) => (
-                <li key={key}>
-                    {key}: {value}
-                </li>
-                ))}
-            </ul>
+            <p>Total expense: {total.toFixed(2)}</p>
+            {final.map((i, index) => <p key={index}>{i} </p>)}
         </div>
        
 
