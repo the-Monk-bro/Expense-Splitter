@@ -2,7 +2,7 @@ import styles from './App.module.css';
 import Header from "./Header/Header";
 import Footer from './Footer/Footer';
 import Split from './Split/Split.jsx';
-import { useState,useMemo } from 'react';
+import { useState,useMemo, useEffect } from 'react';
 
 import Expense from "./Expense/Expense.jsx";
 
@@ -10,7 +10,16 @@ import Expense from "./Expense/Expense.jsx";
 function App() {
 
   //Adding members
-  const [members,setMembers] = useState([]);
+  const [members,setMembers] = useState(()=>{
+    const saved = localStorage.getItem("members");
+    return saved? JSON.parse(saved) : [];
+  });
+  useEffect(()=>{
+    localStorage.setItem("members", JSON.stringify(members));
+  }, [members])
+
+
+
   const [addInput, setAddInput]= useState(false);
   const [addButtonMsg, setAddButtonMsg]= useState("Add Member");
   const [name,setName] = useState("");
@@ -27,6 +36,8 @@ function App() {
       setName("");
     }
   }
+
+
 
   //Adding expense
   const [detail, setDetail] = useState("");
@@ -45,7 +56,13 @@ function App() {
   }
 
 
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState(()=>{
+    const saved = localStorage.getItem("expenses");
+    return saved? JSON.parse(saved): [];
+  });
+  useEffect(()=>{
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+  })
 
 
   const addExpense =()=> {
@@ -58,8 +75,10 @@ function App() {
       setPaidBy("");
       setInvolved([]);
     }
-
   }
+
+
+
 
   //Utility functions
 
@@ -72,6 +91,9 @@ function App() {
   const [showSplit ,setShowSplit] = useState(false);
 
 
+
+
+  //Returning UI
   return (
     <>
     <Header></Header>
@@ -101,7 +123,7 @@ function App() {
           <button onClick={()=>setShowSplit(true)}>Split</button>
         </div>
 
-        {showSplit && <Split members={members}></Split>}
+        
 
       </aside>
 
@@ -113,12 +135,16 @@ function App() {
             <Expense detail={e.detail} amount={e.amount} paidBy={e.paidBy} involved={e.involved}> </Expense>
           </li>)}
         </ul>
+         {showSplit && <Split members={members}></Split>}
       </main>
+     
 
     </div>
     <Footer> </Footer>
     </>
   );
 }
+
+
 
 export default App
