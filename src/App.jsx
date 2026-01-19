@@ -66,6 +66,7 @@ function App() {
   const clearAll=()=>{
     setExpenses([]);
     setMembers([]);
+    setShowSplit(false);
   }
 
   const [showSplit ,setShowSplit] = useState(false);
@@ -89,7 +90,7 @@ function App() {
           <input type='number' value={amount} placeholder='Enter expense amount' onChange={(e)=> setAmount(Number(e.target.value))} />
           <select value={paidBy} onChange={(e) => handlePaidByChange(e)}>
             <option value="">Select paid by</option>
-            {members.map(m=> <option value={m.name}> {m.name} </option>)}
+            {members.map((m,index)=> <option key={index} value={m.name}> {m.name} </option>)}
           </select>
           {members.length!==0 && <p>Select persons involved:</p>}
           <ul>
