@@ -13,7 +13,7 @@ function Expense({detail, amount ,paidBy , involved}){
             <p>Paid by : {paidBy}</p>
             <p>Persons involved:</p>
             <ul>
-                {involved.map(inv => <li> {inv} </li>)}
+                {involved.map((inv,index) => <li key={index}>  {inv} </li>)}
             </ul>
         </div>
 

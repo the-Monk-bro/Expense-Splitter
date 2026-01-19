@@ -10,7 +10,7 @@ import Expense from "./Expense/Expense.jsx";
 function App() {
 
   //Adding members
-  const [members,setMembers] = useState(["Mayank", "Asim"]);
+  const [members,setMembers] = useState([]);
   const [addInput, setAddInput]= useState(false);
   const [addButtonMsg, setAddButtonMsg]= useState("Add Member");
   const [name,setName] = useState("");
@@ -49,12 +49,19 @@ function App() {
 
 
   const addExpense =()=> {
-    setExpenses([...expenses,{detail,amount,  paidBy, involved } ])
-    setDetail("");
-    setAmount("");
-    setPaidBy("");
-    setInvolved([]);
+    if (detail!=="" && amount!=="" && paidBy!=="" && involved.length>0 ){
+      setExpenses([...expenses,{detail,amount,  paidBy, involved } ])
+      setDetail("");
+      setAmount("");
+      setPaidBy("");
+      setInvolved([]);
+    }
 
+  }
+
+  const clearAll=()=>{
+    setExpenses([]);
+    setMembers([]);
   }
 
   
@@ -79,11 +86,12 @@ function App() {
             <option value="">Select paid by</option>
             {members.map(m=> <option value={m}> {m} </option>)}
           </select>
-          <p>Select persons involved:</p>
+          {members.length!==0 && <p>Select persons involved:</p>}
           <ul>
             {members.map((m,index)=><li key={index}><input value={m} type='checkbox' checked={involved.includes(m)} onChange={()=> handleCheck(m)}/> {m} </li> )}
           </ul>
           <button onClick={addExpense}> Done</button>
+          <button onClick={clearAll}> Clear</button>
         </div>
 
       </aside>
