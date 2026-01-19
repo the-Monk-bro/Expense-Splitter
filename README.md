@@ -1,16 +1,55 @@
-# React + Vite
+# Expense Splitter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a web application designed to help groups keep track of shared expenses and calculate the most efficient way to settle debts.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Member Management**: Easily add members to your expense group.
+- **Expense Tracking**:
+    - Record expenses with details and amount.
+    - Specify who paid and which members were involved in the expense.
+- **Smart Splitting**: Automatically calculates the minimum number of transactions required to settle up ("Who owes Whom").
+- **Responsive Design**: Works seamlessly on desktops, tablets, and mobile devices.
+- **Modern UI**: Features a professional dark mode interface with glassmorphism elements and smooth transitions.
 
-## React Compiler
+## 🛠️ Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: [React.js](https://reactjs.org/) (bootstrapped with [Vite](https://vitejs.dev/))
+- **Styling**: 
+    - **CSS Modules**: For scoped, maintainable styles.
+    - **CSS Variables**: For consistent theming (Dark Mode).
+    - **Flexbox & Grid**: For responsive layouts.
+- **Fonts**: [Inter](https://fonts.google.com/specimen/Inter) via Google Fonts.
 
-## Expanding the ESLint configuration
+## 🚀 How to Run
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1.  **Clone the repository**:
+    ```bash
+    git clone <repository-url>
+    ```
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Start the development server**:
+    ```bash
+    npm run dev
+    ```
+4.  **Open in Browser**:
+    Navigate to the URL shown in the terminal (usually `http://localhost:5173`).
+
+## 📝 Usage Guide
+
+1.  **Add Members**: Use the "Add Member" button in the sidebar to create your group.
+2.  **Add Expenses**:
+    - Enter the expense detail (e.g., "Dinner").
+    - Enter the amount.
+    - Select who paid the bill.
+    - Check the box for each member involved in this expense.
+    - Click "Add Expense".
+3.  **View Expenses**: Added expenses will appear as cards in the main content area.
+4.  **Split Costs**: Click the "Split" button to see a breakdown of who owes whom to settle the total balance.
+5.  **Clear Data**: Use the "Clear All" button to reset the application.
+
+---
+&copy; 2026 ExpenseSplitterMG

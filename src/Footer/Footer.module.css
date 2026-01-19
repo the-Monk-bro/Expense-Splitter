@@ -1,4 +1,9 @@
-.foot{
-    margin:5px;
-    font-size: 18px; 
+.foot {
+    margin: 0;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--bg-accent);
 }

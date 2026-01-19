@@ -1,3 +1,75 @@
-.exBox{
-    border: 3px solid black;
+.exBox {
+    background: var(--bg-secondary);
+    border: 1px solid var(--bg-accent);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.exBox:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: var(--accent-color);
+}
+
+.exBox p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* Detail (Title) */
+.exBox p:first-child {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+}
+
+/* Amount */
+.exBox p:nth-of-type(2) {
+    font-weight: 600;
+    color: var(--success-color);
+    font-size: 1.1rem;
+}
+
+/* Paid by */
+.exBox p:nth-of-type(3) {
+    font-size: 0.85rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* "Persons involved" label */
+.exBox p:nth-of-type(4) {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.exBox ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.exBox li {
+    background: var(--bg-primary);
+    border: 1px solid var(--bg-accent);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
 }
