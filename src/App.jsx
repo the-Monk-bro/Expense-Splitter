@@ -116,8 +116,9 @@ function App() {
               {members.map((m, index) => <li key={index}><input value={m.name} type='checkbox' checked={involved.includes(m.name)} onChange={() => handleCheck(m.name)} /> {m.name} </li>)}
             </ul>
             <button onClick={addExpense}> Add Expense</button>
-            <button onClick={clearAll}> Clear All</button>
             <button onClick={() => setShowSplit(true)}>Split</button>
+            <button onClick={clearAll}> Clear All</button>
+            
           </div>
 
         </aside>
