@@ -1,8 +1,8 @@
 import styles from './App.module.css';
 import Header from "./Header/Header";
 import Footer from './Footer/Footer';
-import { useState } from 'react';
-
+import Split from './Split/Split.jsx';
+import { useState,useMemo } from 'react';
 
 import Expense from "./Expense/Expense.jsx";
 
@@ -21,7 +21,7 @@ function App() {
   }
   const enterOnAdd =(e)=>{
     if (e.key=='Enter'){
-      setMembers([...members, name]);
+      setMembers([...members, {name:name , given:0 , haveToGive:0}]);
       setAddInput(false);
       setAddButtonMsg("Add Member");
       setName("");
@@ -51,6 +51,8 @@ function App() {
   const addExpense =()=> {
     if (detail!=="" && amount!=="" && paidBy!=="" && involved.length>0 ){
       setExpenses([...expenses,{detail,amount,  paidBy, involved } ])
+      setMembers(prev => prev.map(m=> m.name===paidBy? {...m, given : m.given+amount} : {...m}));
+      setMembers(prev => prev.map(m=> involved.includes(m.name)? {...m, haveToGive: m.haveToGive+ amount/involved.length} : {...m}))
       setDetail("");
       setAmount("");
       setPaidBy("");
@@ -59,12 +61,15 @@ function App() {
 
   }
 
+  //Utility functions
+
   const clearAll=()=>{
     setExpenses([]);
     setMembers([]);
   }
 
-  
+  const [showSplit ,setShowSplit] = useState(false);
+
 
   return (
     <>
@@ -84,15 +89,18 @@ function App() {
           <input type='number' value={amount} placeholder='Enter expense amount' onChange={(e)=> setAmount(Number(e.target.value))} />
           <select value={paidBy} onChange={(e) => handlePaidByChange(e)}>
             <option value="">Select paid by</option>
-            {members.map(m=> <option value={m}> {m} </option>)}
+            {members.map(m=> <option value={m.name}> {m.name} </option>)}
           </select>
           {members.length!==0 && <p>Select persons involved:</p>}
           <ul>
-            {members.map((m,index)=><li key={index}><input value={m} type='checkbox' checked={involved.includes(m)} onChange={()=> handleCheck(m)}/> {m} </li> )}
+            {members.map((m,index)=><li key={index}><input value={m.name} type='checkbox' checked={involved.includes(m.name)} onChange={()=> handleCheck(m.name)}/> {m.name} </li> )}
           </ul>
           <button onClick={addExpense}> Done</button>
           <button onClick={clearAll}> Clear</button>
+          <button onClick={()=>setShowSplit(true)}>Split</button>
         </div>
+
+        {showSplit && <Split members={members}></Split>}
 
       </aside>
 
@@ -107,6 +115,7 @@ function App() {
       </main>
 
     </div>
+    <Footer> </Footer>
     </>
   );
 }

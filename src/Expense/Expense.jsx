@@ -4,8 +4,6 @@ import styles from './Expense.module.css'
 function Expense({detail, amount ,paidBy , involved}){
 
 
-
-
     return (
         <div className={styles.exBox}>
             <p>{detail}</p>
