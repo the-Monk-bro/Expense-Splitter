@@ -2,7 +2,7 @@ import styles from './App.module.css';
 import Header from "./Header/Header";
 import Footer from './Footer/Footer';
 import Split from './Split/Split.jsx';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import Expense from "./Expense/Expense.jsx";
 
@@ -10,11 +10,11 @@ import Expense from "./Expense/Expense.jsx";
 function App() {
 
   //Adding members
-  const [members,setMembers] = useState(()=>{
+  const [members, setMembers] = useState(() => {
     const saved = localStorage.getItem("members");
-    return saved? JSON.parse(saved) : [];
+    return saved ? JSON.parse(saved) : [];
   });
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.setItem("members", JSON.stringify(members));
   }, [members])
 
@@ -27,12 +27,17 @@ function App() {
     setAddInput(!addInput);
     addInput ? setAddButtonMsg("Add Member") : setAddButtonMsg("Cancel");
   }
+  const submitMember = () => {
+    if (name.trim() === "") return;
+    setMembers([...members, { name: name, given: 0, haveToGive: 0 }]);
+    setAddInput(false);
+    setAddButtonMsg("Add Member");
+    setName("");
+  }
+
   const enterOnAdd = (e) => {
     if (e.key == 'Enter') {
-      setMembers([...members, { name: name, given: 0, haveToGive: 0 }]);
-      setAddInput(false);
-      setAddButtonMsg("Add Member");
-      setName("");
+      submitMember();
     }
   }
 
@@ -54,11 +59,11 @@ function App() {
   }
 
 
-  const [expenses, setExpenses] = useState(()=>{
+  const [expenses, setExpenses] = useState(() => {
     const saved = localStorage.getItem("expenses");
-    return saved? JSON.parse(saved): [];
+    return saved ? JSON.parse(saved) : [];
   });
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(expenses));
   })
 
@@ -79,7 +84,7 @@ function App() {
   }
 
 
-  
+
   //Utility functions
 
   const clearAll = () => {
@@ -101,7 +106,18 @@ function App() {
 
           <div className={styles.section}>
             <button onClick={addMember}>{addButtonMsg}</button>
-            {addInput && <input type='text' placeholder='Enter member name' onChange={(e) => setName(e.target.value)} onKeyDown={(e) => enterOnAdd(e)} />}
+            {addInput && (
+              <div className={styles.inputGroup}>
+                <input
+                  type='text'
+                  placeholder='Enter member name'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onKeyDown={(e) => enterOnAdd(e)}
+                />
+                <button className={styles.actionButton} onClick={submitMember}>Add</button>
+              </div>
+            )}
           </div>
 
           <div className={styles.section}>
@@ -118,7 +134,7 @@ function App() {
             <button onClick={addExpense}> Add Expense</button>
             <button onClick={() => setShowSplit(true)}>Split</button>
             <button onClick={clearAll}> Clear All</button>
-            
+
           </div>
 
         </aside>
