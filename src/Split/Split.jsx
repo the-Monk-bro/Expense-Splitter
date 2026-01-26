@@ -50,7 +50,8 @@ function Split({ members }) {
                 }
             }
         }
-        return info;
+        if (info.length==0) return ["No one needs to pay no one"];
+        else return info;
     }, [surplus, deficit])
 
     return (
