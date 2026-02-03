@@ -91,7 +91,7 @@ app.post('/api/task', auth , async (req,res)=>{
 
     if (!title) return res.status(400).json({msg: "Title is must to add a task"})
 
-    const task = await Task.create({title,description, dueDate, userId: req.user.userId})
+    const task = await Task.create({title,description, dueDate: new Date(dueDate), userId: req.user.userId})
 
     res.status(201).json({msg:"Task addded successfully", added_task: task})
 })
@@ -112,7 +112,7 @@ app.put('/api/task/:id', auth , async (req,res)=>{
 
     const updates= {};
     if (description) updates.description = description
-    if (dueDate) updates.dueDate =dueDate
+    if (dueDate) updates.dueDate = new Date(dueDate)
     if (status) updates.status =status
   
     const task = await Task.findOneAndUpdate({
